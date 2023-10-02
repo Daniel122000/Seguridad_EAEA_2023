@@ -19,6 +19,6 @@ class Client {
     int convert_Addresses();
     int create_Connection();
     void readMessage();
-    void sendMessage();
+    void sendMessage(char* message);
     void endConnection();
 };

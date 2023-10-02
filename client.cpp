@@ -43,8 +43,8 @@ void Client::readMessage(){
     read(client_fd, buffer, 500);
 }
 
-void Client::sendMessage(){
-    char* message = "Hello from client";
+void Client::sendMessage(char* message){
+    //char* message = "Hello from client";
     send(client_fd, message, strlen(message), 0);
 }
 
@@ -63,7 +63,7 @@ int main (int argc, char* argv[]){
     // valread = read(new_socket, buffer, 1024);
 
     // Client sends message to server
-    client.sendMessage();
+    client.sendMessage(argv[1]);
     printf("Message sent\n");
 
     // Client reads the message
