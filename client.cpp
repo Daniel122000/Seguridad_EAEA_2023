@@ -63,7 +63,7 @@ int main (int argc, char* argv[]){
     // valread = read(new_socket, buffer, 1024);
 
     // Client sends message to server
-    client.sendMessage(argv[1]);
+    client.sendMessage(argv[1]); // Second argument is the message to be sent.
     printf("Message sent\n");
 
     // Client reads the message

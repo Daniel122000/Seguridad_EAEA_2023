@@ -8,22 +8,22 @@
 #include <unistd.h>
 
 class Server {
-  public:
-    int server_fd, new_socket, valread;
-    struct sockaddr_in address;
+ public:
+  int server_fd, new_socket, valread;
+  struct sockaddr_in address;
 	int opt = 1;
 	int addrlen = sizeof(address);
-	char buffer[1024] = { 0 };
+	char buffer[500] = { 0 };
 
-  public:
-  	Server();
-    void createSocket();
+ public:
+  Server();
+  void createSocket();
 	void init_Socket();
 	void attach_Socket();
-    void listenForConnections();
-    void readMessage();
-    void sendMessage();
-    void endConnection();
-    void closeServer();
+  void listenForConnections();
+  void readMessage();
+  void sendMessage();
+  void endConnection();
+  void closeServer();
 };
 

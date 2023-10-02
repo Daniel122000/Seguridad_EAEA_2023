@@ -53,7 +53,7 @@ void Server::listenForConnections() {
 }
 
 void Server::readMessage(){
-    read(new_socket, buffer, 1024);
+    read(new_socket, buffer, 500);
 }
 
 void Server::sendMessage(){
@@ -79,7 +79,7 @@ int main (int argc, char* argv[]){
     server.listenForConnections();
 
     // Server reads the message
-    server.readMessage();
+	server.readMessage();
 	printf("%s\n", server.buffer);
 
     // Server sends response to client
