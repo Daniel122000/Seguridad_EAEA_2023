@@ -1,6 +1,6 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
-#include "server.hpp"
+#include "serverCDCD.hpp"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define PORT 8080
+#define PORT 52685 //CDCD
 
 Server::Server(){}
 

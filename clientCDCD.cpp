@@ -1,31 +1,34 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
-#include "client.hpp"
+#include "clientCDCD.hpp"
 
 #include <arpa/inet.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <iostream>
+#include <cstring>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 8080
+#define PORT 52685 //CDCD
+
+using namespace std;
 
 Client::Client(){}
 
 int Client::init_Socket() {
 
     if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-		printf("\n Socket creation error \n");
-		return -1;
-	}
+      cout << "\n Socket creation error \n";
+      return -1;
+    }
 
-	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(PORT);
-	return 0;
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+    return 0;
 }
 
 int Client::convert_Addresses() {
 	if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
-		printf("\nInvalid address/ Address not supported \n");
+		cout << "\nInvalid address/ Address not supported \n";
 		return -1;
 	}	
 	return 0;
@@ -33,7 +36,7 @@ int Client::convert_Addresses() {
 
 int Client::create_Connection() {
 	if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
-		printf("\nConnection Failed \n");
+		cout << "\nConnection Failed \n";
 		return -1;
 	}
 	return 0;
@@ -53,23 +56,30 @@ void Client::endConnection(){
 }
 
 int main (int argc, char* argv[]){
-    Client client;
+    
+    if(argc < 2){
+      cout << "No messages to send\n";
+      return 0;
+    }
+    
+    if(argc > 2){
+      cout << "Too many parameters.\n";
+      return 1;
+    }
 
-    // Client
+    // Client sends message to server if message lenght is < 500
+    if(strlen(argv[1]) > 500){
+      cout << " Maximum characters: 500.\n";
+      return 1;
+    }
+    Client client;
     client.init_Socket();
     client.convert_Addresses();
     client.create_Connection();
-
-    // valread = read(new_socket, buffer, 1024);
-
-    // Client sends message to server
     client.sendMessage(argv[1]); // Second argument is the message to be sent.
-    printf("Message sent\n");
-
-    // Client reads the message
     client.readMessage();
-	printf("%s\n", client.buffer);
-
-	// closing the connected sockets
+    cout <<  client.buffer << endl;
+    // closing the connected sockets
     client.endConnection();
+    return 0;
 }

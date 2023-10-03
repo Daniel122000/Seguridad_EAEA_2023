@@ -1,11 +1,11 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
 #include <arpa/inet.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <string>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 8080
+#define PORT 52685
 
 class Client {
  public:
