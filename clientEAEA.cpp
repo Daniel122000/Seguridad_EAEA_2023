@@ -1,6 +1,6 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
-#include "clientCDCD.hpp"
+#include "clientEAEA.hpp"
 
 #include <arpa/inet.h>
 #include <cstdio>
@@ -8,13 +8,13 @@
 #include <cstring>
 #include <sys/socket.h>
 #include <unistd.h>
-#define PORT 52685 //CDCD
+#define PORT 60138 //EAEA
 
 using namespace std;
 
-Client::Client(){}
+ClientEAEA::ClientEAEA(){}
 
-int Client::init_Socket() {
+int ClientEAEA::init_Socket() {
 
     if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
       cout << "\n Socket creation error \n";
@@ -26,7 +26,7 @@ int Client::init_Socket() {
     return 0;
 }
 
-int Client::convert_Addresses() {
+int ClientEAEA::convert_Addresses() {
 	if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
 		cout << "\nInvalid address/ Address not supported \n";
 		return -1;
@@ -34,7 +34,7 @@ int Client::convert_Addresses() {
 	return 0;
 }
 
-int Client::create_Connection() {
+int ClientEAEA::create_Connection() {
 	if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
 		cout << "\nConnection Failed \n";
 		return -1;
@@ -42,16 +42,16 @@ int Client::create_Connection() {
 	return 0;
 }
 
-void Client::readMessage(){
+void ClientEAEA::readMessage(){
     read(client_fd, buffer, 500);
 }
 
-void Client::sendMessage(char* message){
+void ClientEAEA::sendMessage(char* message){
     //char* message = "Hello from client";
     send(client_fd, message, strlen(message), 0);
 }
 
-void Client::endConnection(){
+void ClientEAEA::endConnection(){
     close(client_fd);
 }
 
@@ -72,7 +72,7 @@ int main (int argc, char* argv[]){
       cout << " Maximum characters: 500.\n";
       return 1;
     }
-    Client client;
+    ClientEAEA client;
     client.init_Socket();
     client.convert_Addresses();
     client.create_Connection();

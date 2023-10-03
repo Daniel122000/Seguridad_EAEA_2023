@@ -4,15 +4,15 @@ LDFLAGS =
 
 all: server client
 
-client: clientCDCD.o
-	$(CC) $(LDFLAGS) clientCDCD.o -o clientCDCD
-clientCDCD.o: clientCDCD.cpp
-	$(CC) $(CFLAGS) clientCDCD.cpp $(LDFLAGS)
+client: clientEAEA.o
+	$(CC) $(LDFLAGS) clientEAEA.o -o clientEAEA
+clientEAEA.o: clientEAEA.cpp
+	$(CC) $(CFLAGS) clientEAEA.cpp $(LDFLAGS)
 
-server: serverCDCD.o
-	$(CC) $(LDFLAGS) serverCDCD.cpp -o serverCDCD
-serverCDCD.o: serverCDCD.cpp
-	$(CC $(CFLAGS) serverCDCD.cpp $(LDFLAGS)
+server: serverEAEA.o
+	$(CC) $(LDFLAGS) serverEAEA.cpp -o serverEAEA
+serverEAEA.o: serverEAEA.cpp
+	$(CC $(CFLAGS) serverEAEA.cpp $(LDFLAGS)
 
 clean:
-	rm -f *.o serverCDCD clientCDCD
+	rm -f *.o serverEAEA clientEAEA

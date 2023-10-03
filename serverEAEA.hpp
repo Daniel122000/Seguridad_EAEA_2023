@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-class Server {
+class ServerEAEA {
  public:
   int server_fd, new_socket, valread;
   struct sockaddr_in address;
@@ -16,7 +16,7 @@ class Server {
 	char buffer[500] = { 0 };
 
  public:
-  Server();
+  ServerEAEA();
   void createSocket();
 	void init_Socket();
 	void attach_Socket();

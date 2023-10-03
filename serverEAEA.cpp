@@ -1,6 +1,6 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
-#include "serverCDCD.hpp"
+#include "serverEAEA.hpp"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -8,11 +8,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#define PORT 52685 //CDCD
+#define PORT 60138 //EAEA
 
-Server::Server(){}
+ServerEAEA::ServerEAEA(){}
 
-void Server::createSocket() {
+void ServerEAEA::createSocket() {
 	// Creating socket file descriptor
 	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		perror("socket failed");
@@ -20,7 +20,7 @@ void Server::createSocket() {
 	}
 }
 
-void Server::init_Socket () {
+void ServerEAEA::init_Socket () {
 	// Forcefully attaching socket to the port 8080
 	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
 		perror("setsockopt");
@@ -32,7 +32,7 @@ void Server::init_Socket () {
 	address.sin_port = htons(PORT);
 }
 
-void Server::attach_Socket() {
+void ServerEAEA::attach_Socket() {
     // Forcefully attaching socket to the port 8080
 	if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
 		perror("bind failed");
@@ -40,7 +40,7 @@ void Server::attach_Socket() {
 	}	
 }
 
-void Server::listenForConnections() {
+void ServerEAEA::listenForConnections() {
     if (listen(server_fd, 3) < 0) {
 		perror("listen");
 		exit(EXIT_FAILURE);
@@ -52,25 +52,25 @@ void Server::listenForConnections() {
 	}
 }
 
-void Server::readMessage(){
+void ServerEAEA::readMessage(){
     read(new_socket, buffer, 500);
 }
 
-void Server::sendMessage(){
+void ServerEAEA::sendMessage(){
     char* message = "Hello from server";
     send(new_socket, message, strlen(message), 0);
 }
 
-void Server::endConnection(){
+void ServerEAEA::endConnection(){
     close(new_socket);
 }
 
-void Server::closeServer(){
+void ServerEAEA::closeServer(){
     shutdown(server_fd, SHUT_RDWR);
 }
 
 int main (int argc, char* argv[]){
-    Server server;
+    ServerEAEA server;
 
     // Server
     server.createSocket();
