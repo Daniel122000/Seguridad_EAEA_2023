@@ -2,92 +2,101 @@
 
 #include "serverEAEA.hpp"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstring>
 #include <unistd.h>
-#define PORT 60138 //EAEA
+#include <iostream>
 
-ServerEAEA::ServerEAEA(){}
+ServerEAEA::ServerEAEA() {
+  createSocket();
+  init_Socket();
+  bind_Socket();
+}
+
+char* ServerEAEA::getBuffer() {
+  return buffer;
+}
 
 void ServerEAEA::createSocket() {
-	// Creating socket file descriptor
-	if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+	if ((serverFileDescriptor = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		perror("socket failed");
 		exit(EXIT_FAILURE);
 	}
 }
 
 void ServerEAEA::init_Socket () {
-	// Forcefully attaching socket to the port 8080
-	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
+  int opt = 1;
+	if (setsockopt(serverFileDescriptor, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
 		perror("setsockopt");
 		exit(EXIT_FAILURE);
 	}
 
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(PORT);
+	address.sin_port = htons(PORT); 
 }
 
-void ServerEAEA::attach_Socket() {
-    // Forcefully attaching socket to the port 8080
-	if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+void ServerEAEA::bind_Socket() {
+	if (bind(serverFileDescriptor, (struct sockaddr*)&address, sizeof(address)) < 0) {
 		perror("bind failed");
 		exit(EXIT_FAILURE);
 	}	
 }
 
 void ServerEAEA::listenForConnections() {
-    if (listen(server_fd, 3) < 0) {
+  if (listen(serverFileDescriptor, 3) < 0) {
 		perror("listen");
 		exit(EXIT_FAILURE);
 	}
-
-    if ((new_socket = accept(server_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen)) < 0) {
-		perror("accept");
-		exit(EXIT_FAILURE);
-	}
 }
 
-void ServerEAEA::readMessage(){
-    read(new_socket, buffer, 500);
+void ServerEAEA::acceptNewConnection() {
+  int address_length = sizeof(address);
+  newSocket = accept(serverFileDescriptor, (struct sockaddr*)&address, (socklen_t*)&address_length);
+  if (newSocket < 0) {
+    perror("accept");
+    exit(EXIT_FAILURE);
+  }
 }
 
-void ServerEAEA::sendMessage(){
-    char* message = "Hello from server";
-    send(new_socket, message, strlen(message), 0);
+void ServerEAEA::readMessage() {
+  int reading_value = read(newSocket, buffer, 500);
+  if (reading_value == 0) {
+    close(newSocket);
+    newSocket = 0;
+  } 
 }
 
-void ServerEAEA::endConnection(){
-    close(new_socket);
+void ServerEAEA::sendMessage() {
+  const char* message = "Hello dear client";
+  send(newSocket, message, strlen(message), 0);
 }
 
-void ServerEAEA::closeServer(){
-    shutdown(server_fd, SHUT_RDWR);
+void ServerEAEA::endConnection() {
+  close(newSocket);
 }
 
-int main (int argc, char* argv[]){
-    ServerEAEA server;
+void ServerEAEA::closeServer() {
+  shutdown(serverFileDescriptor, SHUT_RDWR);
+}
 
-    // Server
-    server.createSocket();
-    server.init_Socket();
-    server.attach_Socket();
-    server.listenForConnections();
+int main (int argc, char* argv[]) {
+  ServerEAEA server;
+  server.listenForConnections();
 
-    // Server reads the message
-	server.readMessage();
-	printf("%s\n", server.buffer);
+	while(true) {
+    server.acceptNewConnection();
+
+    // Server reads the client message
+    server.readMessage();
+    std::cout << "Client message: " << server.getBuffer() << std::endl;
 
     // Server sends response to client
     server.sendMessage();
-	//send(new_socket, hello, strlen(hello), 0);
-	printf("Message sent\n");
+    //send(new_socket, hello, strlen(hello), 0);
+    std::cout << "Response sent." << std::endl;
 
-	// closing the connected sockets
+    // closing the connected sockets
     server.endConnection();
-    server.closeServer();
+	}
+  server.closeServer();
 }

@@ -1,24 +1,27 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 
+#ifndef _CLIENT_EAEA_HPP
+#define _CLIENT_EAEA_HPP
+
 #include <arpa/inet.h>
-#include <cstdio>
-#include <string>
-#include <sys/socket.h>
-#include <unistd.h>
+
 #define PORT 60138
 
 class ClientEAEA {
- public:
-	int status, valread, client_fd;
+ private:
+	int clientFileDescriptor;
 	struct sockaddr_in serv_addr;
 	char buffer[500];
 
  public:
   ClientEAEA();
-  int init_Socket();
+  char* getBuffer();
+  int create_Socket();
   int convert_Addresses();
   int create_Connection();
   void readMessage();
-  void sendMessage(char* message);
+  void sendMessage(const char* message);
   void endConnection();
 };
+
+#endif
