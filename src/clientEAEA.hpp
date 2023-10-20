@@ -4,6 +4,11 @@
 #define _CLIENT_EAEA_HPP
 
 #include <arpa/inet.h>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <syslog.h>
+#include <unistd.h>
 
 #define PORT 60138
 

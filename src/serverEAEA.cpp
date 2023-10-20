@@ -83,7 +83,7 @@ int main (int argc, char* argv[]) {
   ServerEAEA server;
   server.listenForConnections();
 
-	while(true) {
+  while(true) {
     server.acceptNewConnection();
 
     // Server reads the client message
@@ -97,6 +97,6 @@ int main (int argc, char* argv[]) {
 
     // closing the connected sockets
     server.endConnection();
-	}
+  }
   server.closeServer();
 }
