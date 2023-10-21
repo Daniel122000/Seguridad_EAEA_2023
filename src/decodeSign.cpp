@@ -204,7 +204,7 @@ int main(int argc, char const *argv[]) { // ------------------------------------
   // Extraer .csr de CA
   X509_REQ* csr_CA = try_read_csr(cert_CA, &success);
   if (!success) {
-    std::cout << "No se pudo cargar el .csr de la CA. Ya valimos." << std::endl;
+    std::cout << "No se pudo cargar el .csr del certificado de la CA. Ya valimos." << std::endl;
     return 1;
   }
   // Extraer llave publica de .csr de CA
@@ -217,18 +217,33 @@ int main(int argc, char const *argv[]) { // ------------------------------------
   // Verificar con la lalve publica de CA el certificado del usuario
   // Verificar la firma del certificado
   if (X509_verify(cert_user, pubkey_CA) != 1) {
-      fprintf(stderr, "La firma del certificado esta SUS, cancelar.");
+    std::cout << "La firma del certificado esta SUS, cancelar." << std::endl;
+    return 1;
   } else {
-      printf("La firma del certificado esta a cachete.");
+    std::cout << "La firma del certificado esta legal." << std::endl;
   }
 
-  /*std::string plainText = "JugadaTosty";
-  std::string signature = "oMpQMOBaA/vUb0gnBCqIj9QpbWHgliwlS7ojIUlCZlI4li/V5q5r/xAxVWd66KrL\n"\
-"nKBfXyjbCePD7jvvM2gJoBNXPu8qAwGtvTZxs9wgziRcZz4QYmsYDZcDOR1xGmsS\n"\
-"/+9vptQB1uFUsYQ66uzgk/T1XjF9F+dOvzK64XL/7NH5i9E0Cuq39r1WhIVM0kGF\n"\
-"kfOcl39fov0KE13W8NR4PTWNwph2k5uaiNH3ZH9E/8mDaMVLeKUnTcFUTpiN6TSr\n"\
-"6uqawPJ+cEZ8Z0jdFGBXLea25flkYSxyY2mV5dMf71gy5D3sh7PU71xzxfqwDSh6\n"\
-"tjQywhmiYmUYBJ+IZ8MkPA==";
+  // Extraer .csr del usuario
+  X509_REQ* csr_user = try_read_csr(cert_user, &success);
+  if (!success) {
+    std::cout << "No se pudo cargar el .csr del certificado del usuario." << std::endl;
+    return 1;
+  }
+  // Extraer llave publica de .csr de CA
+  char* pubkey_char_user = nullptr;
+  try_read_pubkey(csr_user, &pubkey_char_user);
+  if(!pubkey_char_user){
+    std::cout << "Error al leer llave publica del usuario." << std::endl;
+    return 1;
+  }
+
+  std::string plainText = argv[3];
+  std::string signature = "q+mrsJnBWXvgj5n0fkw8FtVcq2JilVcBztJ3n2GsacrBwvcDY+rgnwJY+nfeVBCe\n"\
+"lrSqvXVRecdCqRjTMKw7cmWtDnLLON3o3nz1XYjOr/pSO4snDqX5uoJ/E8xrMIFk\n"\
+"+zjMv/V90X16iGypA+YSjW/HNHyXjJQzUgCSytBQloeYMS9ep6ZoCrsnDkWb4Gf4\n"\
+"X5LMmLr0Q9pveAMUGmBZMZ9Tfnw35Epx859/bA1af0EaEmSUwsmLOy2DN65OLa8x\n"\
+"RROCveEWkx4as6IYeBqUcn7OY5y4zj8gBSBaq5JA61nSSch1SsGhbeIrMhD/rO50\n"\
+"K1P8t9f5cJ/NpRSAWTlU6g==";
 
   bool authentic = verifySignature(pubkey_char_user, sha256(plainText), (char*)signature.c_str());
 
@@ -236,6 +251,6 @@ int main(int argc, char const *argv[]) { // ------------------------------------
     std::cout << "Todo bien, por ahora." << std::endl;
   } else {
     std::cout << "Hay un impostor entre nosotros. Mensaje o llave SUS." << std::endl;
-  }*/
+  }
   return 0;
 }
