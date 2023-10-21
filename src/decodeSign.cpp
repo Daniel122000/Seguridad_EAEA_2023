@@ -5,6 +5,7 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
+#include <openssl/x509.h>
 
 RSA* createPublicRSA(char* key) {
   RSA *rsa = NULL;
@@ -109,30 +110,62 @@ std::string sha256(std::string text){
   return ss.str();
 }
 
-X509_REQ* try_read_csr(const char* path, bool* success){
-  FILE* fp = fopen(path, "r");
-  if (fp == nullptr) {
-      std::cerr << "No se pudo abrir el archivo de llave pública." << std::endl;
-      *success = false;
-      return NULL;
+X509_REQ* try_read_csr(X509* cert, bool* success){ // Uso el csr del CA?
+  // Obtener el .csr del certificado
+  X509_REQ *csr = X509_to_X509_REQ(cert, nullptr, EVP_get_digestbyname("sha256"));
+  
+  if (csr == nullptr) {
+    *success = false;
+    return NULL;
   }
-
-  X509_REQ* csr = PEM_read_X509_REQ(fp, NULL, NULL, NULL);
-  fclose(fp);
 
   return csr;
 }
 
-void try_read_pubkey(X509_REQ* csr, char** out){
+X509* try_read_crt(const char* path, bool* success){
+  // Abrir el archivo del certificado
+  FILE *fp = fopen(path, "rb");
+  if (fp == NULL) {
+    *success = false;
+    return NULL;
+  }
+
+  // Leer el certificado del archivo
+  X509 *cert = PEM_read_X509(fp, NULL, NULL, NULL);
+  fclose(fp);
+  
+  return cert;
+}
+
+EVP_PKEY* try_read_pubkey(X509_REQ* csr, char** out){
   EVP_PKEY* pubkey = X509_REQ_get_pubkey(csr);
 
   BIO* bio = BIO_new(BIO_s_mem());
   PEM_write_bio_PUBKEY(bio, pubkey);
 
   BIO_get_mem_data(bio, out);
+  return pubkey;
 }
 
-int main(int argc, char const *argv[]) {
+EVP_PKEY* load_public_key_from_string(const char* public_key_pem) {
+    BIO* bio = BIO_new_mem_buf(public_key_pem, -1);
+    if (bio == nullptr) {
+        fprintf(stderr, "Error al crear el objeto BIO\n");
+        return nullptr;
+    }
+
+    EVP_PKEY* public_key = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
+    if (public_key == nullptr) {
+        fprintf(stderr, "Error al leer la clave pública desde la cadena PEM\n");
+        BIO_free(bio);
+        return nullptr;
+    }
+
+    BIO_free(bio);
+    return public_key;
+}
+
+int main(int argc, char const *argv[]) { // ------------------------------------------MAIN
 
   if(argc != 4){
     std::cout << "Uso: <usuario.nac> <hash firmado y en base64> <mensaje texto plano>\n";
@@ -142,33 +175,54 @@ int main(int argc, char const *argv[]) {
   if(strlen(argv[1]) > 30 || strlen(argv[1]) < 15){
     std::cout << "Usuario " << argv[1] << " SUS.\n";
     //return 1;
-  }else if(strlen(argv[2]) > 400){
+  }else if(strlen(argv[2]) > 500){
     std::cout << "Codigo base64 SUS.\n";
     return 1;
   }else if(strlen(argv[3]) > 500){
     std::cout << "Mensaje demasiado extenso. 500 caracteres maximo.\n";
     return 1;
   }
-  
-  std::string user_csr_path = "../csr/";
-  user_csr_path.append(argv[1]).append(".csr");
+
+  std::string user_crt_path = "../crt/"; // Certificado del usuario
+  user_crt_path.append(argv[1]).append(".crt");
   bool success = true;
-  X509_REQ* csr = try_read_csr(user_csr_path.c_str(), &success);
-  
+  X509* cert_user = try_read_crt(user_crt_path.c_str(), &success);
   if (!success) {
-    std::cerr << "No existe el archivo " << argv[1] << ".csr" << std::endl;
+    std::cout << "No existe el certificado para " << argv[1] << std::endl;
+    X509_free(cert_user);
     return 1;
   }
 
-  char* pubkey_char = nullptr;
-  try_read_pubkey(csr, &pubkey_char);
-
-  if(!pubkey_char){
-    std::cerr << "Error al leer llave publica." << std::endl;
+  // Validar certificado usuario con certificado CA
+  // Cargar certificado CA
+  X509* cert_CA = try_read_crt("../ca/CAG5.crt", &success);
+  if (!success) {
+    std::cout << "No existe el certificado de la CA. Ya valimos." << std::endl;
+    X509_free(cert_CA);
     return 1;
   }
+  // Extraer .csr de CA
+  X509_REQ* csr_CA = try_read_csr(cert_CA, &success);
+  if (!success) {
+    std::cout << "No se pudo cargar el .csr de la CA. Ya valimos." << std::endl;
+    return 1;
+  }
+  // Extraer llave publica de .csr de CA
+  char* pubkey_char_CA = nullptr;
+  EVP_PKEY* pubkey_CA = try_read_pubkey(csr_CA, &pubkey_char_CA);
+  if(!pubkey_char_CA){
+    std::cout << "Error al leer llave publica de la CA." << std::endl;
+    return 1;
+  }
+  // Verificar con la lalve publica de CA el certificado del usuario
+  // Verificar la firma del certificado
+  if (X509_verify(cert_user, pubkey_CA) != 1) {
+      fprintf(stderr, "La firma del certificado esta SUS, cancelar.");
+  } else {
+      printf("La firma del certificado esta a cachete.");
+  }
 
-  std::string plainText = "JugadaTosty";
+  /*std::string plainText = "JugadaTosty";
   std::string signature = "oMpQMOBaA/vUb0gnBCqIj9QpbWHgliwlS7ojIUlCZlI4li/V5q5r/xAxVWd66KrL\n"\
 "nKBfXyjbCePD7jvvM2gJoBNXPu8qAwGtvTZxs9wgziRcZz4QYmsYDZcDOR1xGmsS\n"\
 "/+9vptQB1uFUsYQ66uzgk/T1XjF9F+dOvzK64XL/7NH5i9E0Cuq39r1WhIVM0kGF\n"\
@@ -176,11 +230,12 @@ int main(int argc, char const *argv[]) {
 "6uqawPJ+cEZ8Z0jdFGBXLea25flkYSxyY2mV5dMf71gy5D3sh7PU71xzxfqwDSh6\n"\
 "tjQywhmiYmUYBJ+IZ8MkPA==";
 
-  bool authentic = verifySignature(pubkey_char, sha256(plainText), (char*)signature.c_str());
+  bool authentic = verifySignature(pubkey_char_user, sha256(plainText), (char*)signature.c_str());
 
   if ( authentic ) {
     std::cout << "Todo bien, por ahora." << std::endl;
   } else {
     std::cout << "Hay un impostor entre nosotros. Mensaje o llave SUS." << std::endl;
-  }
+  }*/
+  return 0;
 }
