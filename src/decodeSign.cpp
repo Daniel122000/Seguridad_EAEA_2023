@@ -7,6 +7,8 @@
 #include <openssl/bio.h>
 #include <openssl/x509.h>
 
+#include "clientEAEA.hpp"
+
 RSA* createPublicRSA(char* key) {
   RSA *rsa = NULL;
   BIO *keybio;
@@ -217,10 +219,10 @@ int main(int argc, char const *argv[]) { // ------------------------------------
   // Verificar con la lalve publica de CA el certificado del usuario
   // Verificar la firma del certificado
   if (X509_verify(cert_user, pubkey_CA) != 1) {
-    std::cout << "La firma del certificado esta SUS, cancelar." << std::endl;
+    std::cout << "El certificado del usuario esta SUS, cancelar." << std::endl;
     return 1;
   } else {
-    std::cout << "La firma del certificado esta legal." << std::endl;
+    std::cout << "El certificado del usuario esta legal." << std::endl;
   }
 
   // Extraer .csr del usuario
@@ -245,7 +247,17 @@ int main(int argc, char const *argv[]) { // ------------------------------------
     std::cout << "Todo bien, por ahora." << std::endl;
     // Enviar si hay IP, si no, es el nodo final
   } else {
-    std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
+    //std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
+    ClientEAEA client;
+
+    client.convert_Addresses();
+    client.create_Connection();
+    std::string message = "";
+    message.append(argv[1]).append(" ").append(argv[2]).append(" ").append(argv[3]);
+    client.sendMessage(message.c_str());
+    std::cout << "Message sent: " << message << std::endl;
+    client.endConnection();
+
     return 1;
   }
   return 0;

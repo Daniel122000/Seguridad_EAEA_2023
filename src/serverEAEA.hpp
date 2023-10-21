@@ -29,6 +29,7 @@ class ServerEAEA {
   void sendMessage();
   void endConnection();
   void closeServer();
+  //inline void flushBuffer(){this->buffer = { 0 };};
 };
 
 #endif

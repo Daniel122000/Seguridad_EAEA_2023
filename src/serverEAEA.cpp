@@ -76,23 +76,25 @@ void ServerEAEA::closeServer() {
 }
 
 int main (int argc, char* argv[]) {
-  ServerEAEA server;
-  server.listenForConnections();
-
+  
   while(true) {
+    ServerEAEA server;
+    server.listenForConnections();
     server.acceptNewConnection();
 
     // Server reads the client message
     server.readMessage();
-    std::cout << "Client message: " << server.getBuffer() << std::endl;
+    std::string message = server.getBuffer();
+    std::cout << "Client message: " << message << std::endl;
+    std::string user = message; //sub str
 
     // Server sends response to client
     server.sendMessage();
     //send(new_socket, hello, strlen(hello), 0);
-    std::cout << "Response sent." << std::endl;
 
     // closing the connected sockets
     server.endConnection();
+    server.closeServer();
   }
-  server.closeServer();
+  
 }
