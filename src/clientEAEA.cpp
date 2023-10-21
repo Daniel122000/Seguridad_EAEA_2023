@@ -53,7 +53,7 @@ void ClientEAEA::endConnection() {
 
 int main (int argc, char* argv[]) {  //-----------------------------------MAIN  
     
-  if(argc > 1) {
+  if(argc > 2) {
     cout << "Too many parameters.\n";
     return 1;
   }
@@ -64,7 +64,7 @@ int main (int argc, char* argv[]) {  //-----------------------------------MAIN
   client.create_Connection();
 
  // Ruta relativa al archivo que deseas leer
-  std::string fileRoute = "/home/mich/Desktop/MensajesG5.txt";
+  std::string fileRoute = "dummy.txt";
 
   // Abrir el archivo en modo de lectura
   std::ifstream file;
@@ -84,7 +84,7 @@ int main (int argc, char* argv[]) {  //-----------------------------------MAIN
           // Client sends the message
           
           client.sendMessage(lineaChar);
-          cout << "Message sent: " << lineaChar << " size>" << linea.size()<< endl;
+          cout << "Message sent: " << lineaChar << endl;
 
           // Client reads the server response
           //client.readMessage();

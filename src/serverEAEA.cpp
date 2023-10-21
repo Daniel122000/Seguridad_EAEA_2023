@@ -2,10 +2,6 @@
 
 #include "serverEAEA.hpp"
 
-#include <cstring>
-#include <unistd.h>
-#include <iostream>
-
 ServerEAEA::ServerEAEA() {
   createSocket();
   init_Socket();

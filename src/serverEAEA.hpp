@@ -5,7 +5,11 @@
 
 #include <netinet/in.h>
 
-#define PORT 60138 //EAEA
+#include <cstring>
+#include <unistd.h>
+#include <iostream>
+
+#define PORT 60138 // EAEA
 
 class ServerEAEA {
  private:

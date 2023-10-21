@@ -168,13 +168,13 @@ EVP_PKEY* load_public_key_from_string(const char* public_key_pem) {
 int main(int argc, char const *argv[]) { // ------------------------------------------MAIN
 
   if(argc != 4){
-    std::cout << "Uso: <usuario.nac> <hash firmado y en base64> <mensaje texto plano>\n";
-    //return 1;
+    std::cout << "Uso: <usuario.nac> <hash firmado y en base64 ENTRE COMILLAS SIMPLES> <mensaje texto plano>\n";
+    return 1;
   }
 
   if(strlen(argv[1]) > 30 || strlen(argv[1]) < 15){
     std::cout << "Usuario " << argv[1] << " SUS.\n";
-    //return 1;
+    return 1;
   }else if(strlen(argv[2]) > 500){
     std::cout << "Codigo base64 SUS.\n";
     return 1;
@@ -238,19 +238,15 @@ int main(int argc, char const *argv[]) { // ------------------------------------
   }
 
   std::string plainText = argv[3];
-  std::string signature = "q+mrsJnBWXvgj5n0fkw8FtVcq2JilVcBztJ3n2GsacrBwvcDY+rgnwJY+nfeVBCe\n"\
-"lrSqvXVRecdCqRjTMKw7cmWtDnLLON3o3nz1XYjOr/pSO4snDqX5uoJ/E8xrMIFk\n"\
-"+zjMv/V90X16iGypA+YSjW/HNHyXjJQzUgCSytBQloeYMS9ep6ZoCrsnDkWb4Gf4\n"\
-"X5LMmLr0Q9pveAMUGmBZMZ9Tfnw35Epx859/bA1af0EaEmSUwsmLOy2DN65OLa8x\n"\
-"RROCveEWkx4as6IYeBqUcn7OY5y4zj8gBSBaq5JA61nSSch1SsGhbeIrMhD/rO50\n"\
-"K1P8t9f5cJ/NpRSAWTlU6g==";
+  std::string signature = argv[2];
 
-  bool authentic = verifySignature(pubkey_char_user, sha256(plainText), (char*)signature.c_str());
 
-  if ( authentic ) {
+  if (verifySignature(pubkey_char_user, sha256(plainText), (char*)signature.c_str())) {
     std::cout << "Todo bien, por ahora." << std::endl;
+    // Enviar si hay IP, si no, es el nodo final
   } else {
-    std::cout << "Hay un impostor entre nosotros. Mensaje o llave SUS." << std::endl;
+    std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
+    return 1;
   }
   return 0;
 }
