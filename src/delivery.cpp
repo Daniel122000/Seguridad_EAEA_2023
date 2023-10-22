@@ -1,7 +1,7 @@
 #include "clientEAEA.hpp"
 #include "argsVerifier.hpp"
 
-#define IP_ADDR "127.0.0.1"
+#define IP_ADDR "192.168.5.56"
 
 std::string prepare_delivery_message(char const *argv[]){
     std::string x = argv[0];
