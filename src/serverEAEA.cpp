@@ -55,7 +55,7 @@ void ServerEAEA::acceptNewConnection() {
 }
 
 void ServerEAEA::readMessage() {
-  int reading_value = read(newSocket, buffer, 500);
+  int reading_value = read(newSocket, buffer, 1024);
   if (reading_value == 0) {
     close(newSocket);
     newSocket = 0;
@@ -73,28 +73,4 @@ void ServerEAEA::endConnection() {
 
 void ServerEAEA::closeServer() {
   shutdown(serverFileDescriptor, SHUT_RDWR);
-}
-
-int main (int argc, char* argv[]) {
-  
-  while(true) {
-    ServerEAEA server;
-    server.listenForConnections();
-    server.acceptNewConnection();
-
-    // Server reads the client message
-    server.readMessage();
-    std::string message = server.getBuffer();
-    std::cout << "Client message: " << message << std::endl;
-    std::string user = message; //sub str
-
-    // Server sends response to client
-    server.sendMessage();
-    //send(new_socket, hello, strlen(hello), 0);
-
-    // closing the connected sockets
-    server.endConnection();
-    server.closeServer();
-  }
-  
 }

@@ -1,5 +1,4 @@
 // Adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
-
 #include "clientEAEA.hpp"
 
 using namespace std;
@@ -23,8 +22,8 @@ int ClientEAEA::create_Socket() {
   return 0;
 }
 
-int ClientEAEA::convert_Addresses() {
-	if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
+int ClientEAEA::convert_Addresses(char* IP) {
+	if (inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0) {
 	  cout << "\nInvalid address/ Address not supported \n";
 	  return -1;
 	}	
@@ -77,9 +76,6 @@ void ClientEAEA::endConnection() {
       // Si no se puede abrir el archivo, enviar un mensaje al syslog
       //syslog(LOG_ERR, "No se pudo abrir el archivo: %s", fileRoute.c_str());
   
-
-
-  // Close the connected sockets
   
   return 0;
 }

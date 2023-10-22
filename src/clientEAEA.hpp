@@ -16,13 +16,13 @@ class ClientEAEA {
  private:
 	int clientFileDescriptor;
 	struct sockaddr_in serv_addr;
-	char buffer[500];
+	char buffer[1024];
 
  public:
   ClientEAEA();
   char* getBuffer();
   int create_Socket();
-  int convert_Addresses();
+  int convert_Addresses(char* IP);
   int create_Connection();
   void readMessage();
   void sendMessage(const char* message);

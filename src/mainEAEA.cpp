@@ -8,8 +8,10 @@
 #include <openssl/x509.h>
 
 #include "clientEAEA.hpp"
+#include "serverEAEA.hpp"
+#include "argsVerifier.hpp"
 
-RSA* createPublicRSA(char* key) {
+RSA* create_public_rsa(char* key) {
   RSA *rsa = NULL;
   BIO *keybio;
   keybio = BIO_new_mem_buf((const void*)key, -1);
@@ -20,7 +22,7 @@ RSA* createPublicRSA(char* key) {
   return rsa;
 }
 
-bool RSAVerifySignature( RSA* rsa,
+bool rsa_verify_signature( RSA* rsa,
                          unsigned char* MsgHash,
                          size_t MsgHashLen,
                          const char* Msg,
@@ -53,7 +55,7 @@ bool RSAVerifySignature( RSA* rsa,
   }
 }
 
-size_t calcDecodeLength(const char* b64input) {
+size_t calc_decode_length(const char* b64input) {
   size_t len = strlen(b64input), padding = 0;
 
   if (b64input[len-1] == '=' && b64input[len-2] == '=') //last two chars are =
@@ -63,10 +65,10 @@ size_t calcDecodeLength(const char* b64input) {
   return (len*3)/4 - padding;
 }
 
-void Base64Decode(const char* b64message, unsigned char** buffer, size_t* length) {
+void base64_decode(const char* b64message, unsigned char** buffer, size_t* length) {
   BIO *bio, *b64;
 
-  int decodeLen = calcDecodeLength(b64message);
+  int decodeLen = calc_decode_length(b64message);
   *buffer = (unsigned char*)malloc(decodeLen + 1);
   (*buffer)[decodeLen] = '\0';
 
@@ -78,13 +80,13 @@ void Base64Decode(const char* b64message, unsigned char** buffer, size_t* length
   BIO_free_all(bio);
 }
 
-bool verifySignature(char* publicKey, std::string plainText, char* signatureBase64) {
-  RSA* publicRSA = createPublicRSA(publicKey);
+bool verify_signature(char* publicKey, std::string plainText, char* signatureBase64) {
+  RSA* publicRSA = create_public_rsa(publicKey);
   unsigned char* encMessage;
   size_t encMessageLength;
   bool authentic;
-  Base64Decode(signatureBase64, &encMessage, &encMessageLength);
-  bool result = RSAVerifySignature(publicRSA, encMessage, encMessageLength, plainText.c_str(), plainText.length(), &authentic);
+  base64_decode(signatureBase64, &encMessage, &encMessageLength);
+  bool result = rsa_verify_signature(publicRSA, encMessage, encMessageLength, plainText.c_str(), plainText.length(), &authentic);
   return result & authentic;
 }
 
@@ -129,6 +131,7 @@ X509* try_read_crt(const char* path, bool* success){
   FILE *fp = fopen(path, "rb");
   if (fp == NULL) {
     *success = false;
+    std::cout << "No existe el certificado para el usuario dado." << std::endl;
     return NULL;
   }
 
@@ -167,97 +170,152 @@ EVP_PKEY* load_public_key_from_string(const char* public_key_pem) {
     return public_key;
 }
 
-int main(int argc, char const *argv[]) { // ------------------------------------------MAIN
-
-  if(argc != 4){
-    std::cout << "Uso: <usuario.nac> <hash firmado y en base64 ENTRE COMILLAS SIMPLES> <mensaje texto plano>\n";
-    return 1;
-  }
-
-  if(strlen(argv[1]) > 30 || strlen(argv[1]) < 15){
-    std::cout << "Usuario " << argv[1] << " SUS.\n";
-    return 1;
-  }else if(strlen(argv[2]) > 500){
-    std::cout << "Codigo base64 SUS.\n";
-    return 1;
-  }else if(strlen(argv[3]) > 500){
-    std::cout << "Mensaje demasiado extenso. 500 caracteres maximo.\n";
-    return 1;
-  }
-
+X509* verify_user_certificate(const char* user, bool* success){
   std::string user_crt_path = "../crt/"; // Certificado del usuario
-  user_crt_path.append(argv[1]).append(".crt");
-  bool success = true;
-  X509* cert_user = try_read_crt(user_crt_path.c_str(), &success);
-  if (!success) {
-    std::cout << "No existe el certificado para " << argv[1] << std::endl;
-    X509_free(cert_user);
-    return 1;
-  }
+  user_crt_path.append(user).append(".crt");
+  
+  return try_read_crt(user_crt_path.c_str(), success);
+}
 
+void verify_user_certificate_with_ca(X509* cert_user, bool* success){
   // Validar certificado usuario con certificado CA
   // Cargar certificado CA
-  X509* cert_CA = try_read_crt("../ca/CAG5.crt", &success);
+  X509* cert_CA = try_read_crt("../ca/CAG5.crt", success);
   if (!success) {
     std::cout << "No existe el certificado de la CA. Ya valimos." << std::endl;
     X509_free(cert_CA);
-    return 1;
+    return;
   }
   // Extraer .csr de CA
-  X509_REQ* csr_CA = try_read_csr(cert_CA, &success);
+  X509_REQ* csr_CA = try_read_csr(cert_CA, success);
   if (!success) {
+    X509_free(cert_CA);
+    X509_REQ_free(csr_CA);
     std::cout << "No se pudo cargar el .csr del certificado de la CA. Ya valimos." << std::endl;
-    return 1;
+    return;
   }
   // Extraer llave publica de .csr de CA
   char* pubkey_char_CA = nullptr;
   EVP_PKEY* pubkey_CA = try_read_pubkey(csr_CA, &pubkey_char_CA);
   if(!pubkey_char_CA){
+    X509_free(cert_CA);
+    X509_REQ_free(csr_CA);
+    EVP_PKEY_free(pubkey_CA);
     std::cout << "Error al leer llave publica de la CA." << std::endl;
-    return 1;
+    return;
   }
   // Verificar con la lalve publica de CA el certificado del usuario
   // Verificar la firma del certificado
   if (X509_verify(cert_user, pubkey_CA) != 1) {
+    X509_free(cert_CA);
+    X509_REQ_free(csr_CA);
+    EVP_PKEY_free(pubkey_CA);
     std::cout << "El certificado del usuario esta SUS, cancelar." << std::endl;
-    return 1;
+    return;
   } else {
     std::cout << "El certificado del usuario esta legal." << std::endl;
   }
+  X509_free(cert_CA);
+  X509_REQ_free(csr_CA);
+  EVP_PKEY_free(pubkey_CA);
+  return;
+}
 
+void extract_user_public_key(X509* cert_user, bool* success, char** pubkey_char_user){
   // Extraer .csr del usuario
-  X509_REQ* csr_user = try_read_csr(cert_user, &success);
+  X509_REQ* csr_user = try_read_csr(cert_user, success);
   if (!success) {
+    X509_REQ_free(csr_user);
     std::cout << "No se pudo cargar el .csr del certificado del usuario." << std::endl;
-    return 1;
+    return;
   }
-  // Extraer llave publica de .csr de CA
-  char* pubkey_char_user = nullptr;
-  try_read_pubkey(csr_user, &pubkey_char_user);
+  // Extraer llave publica de .csr del usuario
+  try_read_pubkey(csr_user, pubkey_char_user);
   if(!pubkey_char_user){
+    X509_REQ_free(csr_user);
     std::cout << "Error al leer llave publica del usuario." << std::endl;
-    return 1;
+    return;
   }
+  X509_REQ_free(csr_user);
+  X509_free(cert_user);
+  return;
+}
 
-  std::string plainText = argv[3];
-  std::string signature = argv[2];
-
-
-  if (verifySignature(pubkey_char_user, sha256(plainText), (char*)signature.c_str())) {
-    std::cout << "Todo bien, por ahora." << std::endl;
-    // Enviar si hay IP, si no, es el nodo final
-  } else {
-    //std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
-    ClientEAEA client;
+void send_to_next_node(std::string message){
+   /*ClientEAEA client;
 
     client.convert_Addresses();
     client.create_Connection();
-    std::string message = "";
-    message.append(argv[1]).append(" ").append(argv[2]).append(" ").append(argv[3]);
     client.sendMessage(message.c_str());
     std::cout << "Message sent: " << message << std::endl;
-    client.endConnection();
+    client.endConnection();*/
+}
 
+int main(int argc, char const *argv[]) { // ------------------------------------------MAIN
+
+  // Server listening
+  std::string strings[4];
+  strings[0] = argv[1];
+  strings[1] = argv[2];
+  strings[2] = argv[3];
+  strings[3] = argv[4];
+
+  while(true) {
+    ServerEAEA server;
+    server.listenForConnections();
+    server.acceptNewConnection();
+
+    // Server reads the client message
+    server.readMessage();
+    std::string message = server.getBuffer();
+
+    ArgsVerifier verifier;
+    if(!verifier.verify_arguments_node(message, strings)){
+      std::cout << "Argumentos invalidos. Esperando otros mensajes." << std::endl;
+    }else{
+       // Server sends response to client
+      server.sendMessage();
+      //send(new_socket, hello, strlen(hello), 0);
+    }
+    
+    // Close sockets
+    server.endConnection();
+    server.closeServer();
+  }
+  
+  std::string user = argv[1];
+  std::string signature = argv[2];
+  std::string plainText = argv[3];
+  
+  // Verificar si existe el certificado para el usuario
+  bool success = true;
+  X509* cert_user = verify_user_certificate(user.c_str(), &success);
+  
+  if(!success){
+    X509_free(cert_user);
+    return 1;
+  }
+
+  // Verificar si el certificado del usuario es valido, usando el certificado de CA
+  verify_user_certificate_with_ca(cert_user, &success);
+  if(!success){
+    X509_free(cert_user);
+    return 1;
+  }
+  
+  // Extraer la llave publica del usuario para verificar la firma
+  char* pubkey_char_user = nullptr; // Llave publica formato .pem
+  extract_user_public_key(cert_user, &success, &pubkey_char_user);  
+
+  // Verificar la firma del hash con la llave publica y el mensaje del usuario
+  if (verify_signature(pubkey_char_user, sha256(plainText), (char*)signature.c_str())) {
+    std::cout << "Todo bien, por ahora." << std::endl;
+    // Enviar si hay IP, si no, es el nodo final
+    std::string message = "";
+    message.append(user).append(" ").append(signature).append(" ").append(plainText);
+    send_to_next_node(message);
+  } else {
+    std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
     return 1;
   }
   return 0;

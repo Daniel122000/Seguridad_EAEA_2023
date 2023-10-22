@@ -15,7 +15,7 @@ class ServerEAEA {
  private:
   int serverFileDescriptor, newSocket;
   struct sockaddr_in address;
-	char buffer[500] = { 0 }; 
+	char buffer[1024] = { 0 }; 
 
  public:
   ServerEAEA();
