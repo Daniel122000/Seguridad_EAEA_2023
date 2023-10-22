@@ -10,7 +10,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#define PORT 60138 // EAEA
+#define OUT_PORT 60138 // EAEA
 
 class ClientEAEA {
  private:

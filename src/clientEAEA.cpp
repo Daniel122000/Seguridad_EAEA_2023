@@ -18,7 +18,7 @@ int ClientEAEA::create_Socket() {
   }
 
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_port = htons(PORT);
+  serv_addr.sin_port = htons(OUT_PORT);
   return 0;
 }
 

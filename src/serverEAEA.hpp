@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <iostream>
 
-#define PORT 60138 // EAEA
+#define IN_PORT 60138 // EAEA
 
 class ServerEAEA {
  private:

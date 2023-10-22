@@ -5,16 +5,15 @@
 #include "serverEAEA.hpp"
 #include "verifier.hpp"
 
-void send_to_next_node(std::string message){
-   /*ClientEAEA client;
+void send_to_next_node(std::string message, std::string IP){
+  ClientEAEA client;
 
-    client.convert_Addresses();
-    client.create_Connection();
-    client.sendMessage(message.c_str());
-    std::cout << "Message sent: " << message << std::endl;
-    client.endConnection();*/
-    std::cout << "Enviando al siguietne nodo." << std::endl;
-    std::cout << message << std::endl;
+  client.convert_Addresses((char*)IP.c_str());
+  client.create_Connection();
+  client.sendMessage(message.c_str());
+  //std::cout << "Message sent: " << message << std::endl;
+  client.endConnection();
+  std::cout << "Enviando al siguiente nodo." << std::endl;
 }
 
 int main(int argc, char const *argv[]) { // -----------------------------------MAIN
@@ -54,12 +53,23 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
       // Verificar la firma del hash con la llave publica y el mensaje del usuario
       if (state && verifier.verify_sign()) {
         std::cout << "Todo bien, por ahora." << std::endl;
+        
         // Enviar si hay IP, si no, es el nodo final
-        std::string message = "";
-        message.append(user).append(" ").append(signature64).append(" ").append(plainText);
-        send_to_next_node(message);
+        if(strings[1] == "0"){
+          std::cout << "Trayecto completado." << std::endl;
+        }else{
+          std::string message = "";
+          message.append(strings[3])
+                  .append(" ")
+                  .append(user)
+                  .append(" ")
+                  .append(signature64)
+                  .append(" ")
+                  .append(plainText);
+          send_to_next_node(message, strings[1]);
+        }
       } else {
-        std::cout << "Hay un impostor entre nosotros. Mensaje o llave son SUS." << std::endl;
+        std::cout << "Hay un impostor entre nosotros. Mensaje, llave publica o base64 son SUS." << std::endl;
       }
     }
     

@@ -28,7 +28,7 @@ void ServerEAEA::init_Socket () {
 
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = INADDR_ANY;
-	address.sin_port = htons(PORT); 
+	address.sin_port = htons(IN_PORT); 
 }
 
 void ServerEAEA::bind_Socket() {
