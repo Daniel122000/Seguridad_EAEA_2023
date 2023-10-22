@@ -40,7 +40,4 @@ bool ArgsVerifier::verify_arguments_node(std::string args,std::string* strings,
     *b = base64;
     *p = plain;
     return true;
-    //std::cout << "Client message user:" << user << ":"<< std::endl;
-    //std::cout << "Client message base64:" << base64 << ":"<< std::endl;
-    //std::cout << "Client message plaintext:" << plain << ":"<< std::endl;
 }

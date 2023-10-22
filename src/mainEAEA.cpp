@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
     if(!args_verifier.verify_arguments_node(message, strings, &user, &signature64, &plainText)){
       std::cout << "Argumentos invalidos. Esperando otros mensajes." << std::endl;
     }else{ // ARGS NOT NECESSARILY GOOD
-      
+
       Verifier verifier(user, signature64, plainText);
       
       // Verificar si existe el certificado para el usuario
