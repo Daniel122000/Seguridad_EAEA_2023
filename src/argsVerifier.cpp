@@ -18,10 +18,12 @@ bool ArgsVerifier::verify_arguments_delivery(int argc, char const *argv[]){
     return true;
 }
 
-bool ArgsVerifier::verify_arguments_node(std::string args,std::string* strings){
+bool ArgsVerifier::verify_arguments_node(std::string args,std::string* strings,
+                                         std::string* u, std::string* b, std::string* p){
     std::size_t pos = args.find(" ");
     std::size_t pos2 = args.find(" ",pos+1);
     std::size_t pos3 = args.find(" ",pos2+1);
+    
     std::string stringX = args.substr(0,pos);
     std::string user = args.substr(pos+1,pos2-pos-1);
     std::string base64 = args.substr(pos2+1,pos3-pos2-1);
@@ -30,6 +32,9 @@ bool ArgsVerifier::verify_arguments_node(std::string args,std::string* strings){
     if(stringX != strings[2] || user.empty() || base64.empty() || plain.empty()){
         return false;
     }
+    *u = user;
+    *b = base64;
+    *p = plain;
     return true;
     //std::cout << "Client message user:" << user << ":"<< std::endl;
     //std::cout << "Client message base64:" << base64 << ":"<< std::endl;

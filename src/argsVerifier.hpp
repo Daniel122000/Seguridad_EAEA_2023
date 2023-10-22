@@ -7,7 +7,10 @@
 
 class ArgsVerifier{
   public:
+    ArgsVerifier();
+    ~ArgsVerifier();
     bool verify_arguments_delivery(int argc, char const *argv[]);
-    bool verify_arguments_node(std::string args, std::string* strings);
+    bool verify_arguments_node(std::string args, std::string* strings,
+                                std::string* u, std::string* b, std::string* p);
 };
 #endif // ARGSVERIFIER_HPP
