@@ -1,11 +1,16 @@
 #ifndef _SIGN_VERIFIER_HPP
 #define _SIGN_VERIFIER_HPP
 
+#include "coder.hpp"
+
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 #include <iostream>
 
 class SignVerifier{
+  private:
+    Coder coder;
+    
   public:
     SignVerifier();
     ~SignVerifier();

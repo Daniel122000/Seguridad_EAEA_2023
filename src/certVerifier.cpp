@@ -1,5 +1,9 @@
 #include "certVerifier.hpp"
 
+CertVerifier::CertVerifier(){}
+
+CertVerifier::~CertVerifier(){}
+
 void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* success){
   // Validar certificado usuario con certificado CA
   // Cargar certificado CA

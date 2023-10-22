@@ -16,8 +16,7 @@ std::string prepare_delivery_message(char const *argv[]){
 
 void deliver_message(std::string message){
     ClientEAEA client;
-
-    client.convert_Addresses(IP_ADDR);
+    client.convert_Addresses((char*)IP_ADDR);
     client.create_Connection();
     client.sendMessage(message.c_str());
     std::cout << "Message sent to " << IP_ADDR << std::endl;

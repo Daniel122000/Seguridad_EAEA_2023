@@ -1,5 +1,9 @@
 #include "signVerifier.hpp"
 
+SignVerifier::SignVerifier(){}
+
+SignVerifier::~SignVerifier(){}
+
 X509_REQ* SignVerifier::try_read_csr(X509* cert, bool* success){ // Uso el csr del CA?
   // Obtener el .csr del certificado
   X509_REQ *csr = X509_to_X509_REQ(cert, nullptr, EVP_get_digestbyname("sha256"));
@@ -109,7 +113,7 @@ bool SignVerifier::verify_signature(char* publicKey, std::string plainText, char
   unsigned char* encMessage;
   size_t encMessageLength;
   bool authentic;
-  base64_decode(signatureBase64, &encMessage, &encMessageLength);
+  coder.base64_decode(signatureBase64, &encMessage, &encMessageLength);
   bool result = rsa_verify_signature(publicRSA, encMessage, encMessageLength, plainText.c_str(), plainText.length(), &authentic);
   return result & authentic;
 }
