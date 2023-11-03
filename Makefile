@@ -1,18 +1,13 @@
 CC=g++
-CFLAGS=-c -Wall -g
-LDFLAGS = 
+LDFLAGS = -lssl -lcrypto
 
-all: server client
+all: delivery main
 
-client: clientEAEA.o
-	$(CC) $(LDFLAGS) clientEAEA.o -o clientEAEA
-clientEAEA.o: clientEAEA.cpp
-	$(CC) $(CFLAGS) clientEAEA.cpp $(LDFLAGS)
+delivery:
+	$(CC) src/delivery.cpp src/argsVerifier.cpp src/logger.cpp src/clientEAEA.cpp -o src/delivery
 
-server: serverEAEA.o
-	$(CC) $(LDFLAGS) serverEAEA.cpp -o serverEAEA
-serverEAEA.o: serverEAEA.cpp
-	$(CC $(CFLAGS) serverEAEA.cpp $(LDFLAGS)
+main:
+	$(CC) src/mainEAEA.cpp src/argsVerifier.cpp src/verifier.cpp src/signVerifier.cpp src/certVerifier.cpp src/coder.cpp src/clientEAEA.cpp src/serverEAEA.cpp src/logger.cpp -o src/main $(LDFLAGS)
 
 clean:
-	rm -f *.o serverEAEA clientEAEA
+	rm -f src/delivery src/main
