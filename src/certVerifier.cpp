@@ -9,7 +9,7 @@ void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* succes
   // Cargar certificado CA
   X509* cert_CA = try_read_crt("../ca/CAG5.crt", success);
   if (!success) {
-    std::cout << "No existe el certificado de la CA. Ya valimos." << std::endl;
+    Logger::log("No existe el certificado de la CA. Ya valimos.");
     X509_free(cert_CA);
     return;
   }
@@ -18,7 +18,7 @@ void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* succes
   if (!success) {
     X509_free(cert_CA);
     X509_REQ_free(csr_CA);
-    std::cout << "No se pudo cargar el .csr del certificado de la CA. Ya valimos." << std::endl;
+    Logger::log("No se pudo cargar el .csr del certificado de la CA. Ya valimos.");
     return;
   }
   // Extraer llave publica de .csr de CA
@@ -28,7 +28,7 @@ void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* succes
     X509_free(cert_CA);
     X509_REQ_free(csr_CA);
     EVP_PKEY_free(pubkey_CA);
-    std::cout << "Error al leer llave publica de la CA." << std::endl;
+    Logger::log("Error al leer llave publica de la CA.");
     return;
   }
   // Verificar con la lalve publica de CA el certificado del usuario
@@ -37,10 +37,10 @@ void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* succes
     X509_free(cert_CA);
     X509_REQ_free(csr_CA);
     EVP_PKEY_free(pubkey_CA);
-    std::cout << "El certificado del usuario esta SUS, cancelar." << std::endl;
+    Logger::log("El certificado del usuario esta SUS, cancelar.");
     return;
   } else {
-    std::cout << "El certificado del usuario esta legal." << std::endl;
+    Logger::log("El certificado del usuario esta legal.");
   }
   X509_free(cert_CA);
   X509_REQ_free(csr_CA);
@@ -53,7 +53,7 @@ X509* CertVerifier::try_read_crt(const char* path, bool* success){
   FILE *fp = fopen(path, "rb");
   if (fp == NULL) {
     *success = false;
-    std::cout << "No existe el certificado para el usuario dado." << std::endl;
+    Logger::log("No existe el certificado para el usuario dado.");
     return NULL;
   }
 

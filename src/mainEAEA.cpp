@@ -11,9 +11,10 @@ void send_to_next_node(std::string message, std::string IP){
   client.convert_Addresses((char*)IP.c_str());
   client.create_Connection();
   client.sendMessage(message.c_str());
-  //std::cout << "Message sent: " << message << std::endl;
   client.endConnection();
-  std::cout << "Enviando al siguiente nodo." << std::endl;
+  std::string log_message = "Enviando al siguiente nodo con IP=";
+  log_message.append(IP);
+  Logger::log(log_message);
 }
 
 int main(int argc, char const *argv[]) { // -----------------------------------MAIN
@@ -40,8 +41,8 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
 
     ArgsVerifier args_verifier;
     if(!args_verifier.verify_arguments_node(message, strings, &user, &signature64, &plainText)){
-      std::cout << "Argumentos invalidos. Esperando otros mensajes." << std::endl;
-    }else{ // ARGS NOT NECESSARILY GOOD
+      std::cout << "Fuente del mensaje SUS o estructura incompleta." << std::endl;
+    }else{
 
       Verifier verifier(user, signature64, plainText);
       
@@ -52,11 +53,15 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
 
       // Verificar la firma del hash con la llave publica y el mensaje del usuario
       if (state && verifier.verify_sign()) {
-        std::cout << "Todo bien, por ahora." << std::endl;
+        std::string log_message = "Mensaje verificado. Usuario:";
+        log_message.append(user);
+        log_message.append(" - Mensaje original:");
+        log_message.append(plainText);
+        Logger::log(log_message);
         
         // Enviar si hay IP, si no, es el nodo final
         if(strings[1] == "0"){
-          std::cout << "Trayecto completado." << std::endl;
+          Logger::log("Trayecto del mensaje completado.");
         }else{
           std::string message = "";
           message.append(strings[3])
@@ -69,7 +74,7 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
           send_to_next_node(message, strings[1]);
         }
       } else {
-        std::cout << "Hay un impostor entre nosotros. Mensaje, llave publica o base64 son SUS." << std::endl;
+        Logger::log("Hay un impostor entre nosotros. Mensaje, llave publica o base64 son SUS.");
       }
     }
     

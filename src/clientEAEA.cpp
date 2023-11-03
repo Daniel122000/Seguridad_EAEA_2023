@@ -49,34 +49,3 @@ void ClientEAEA::sendMessage(const char* message) {
 void ClientEAEA::endConnection() {
   close(clientFileDescriptor);
 }
-
-/*int main (int argc, char* argv[]) {  //-----------------------------------MAIN  
-    
-  if(argc > 2) {
-    cout << "Too many parameters.\n";
-    return 1;
-  }
-
-  ClientEAEA client;
-
-  client.convert_Addresses();
-  client.create_Connection();
-  client.sendMessage("Hola");
-  cout << "Message sent: " << "Hola" << endl;
-  client.endConnection();
-
- // Ruta relativa al archivo que deseas leer
-
-  // Abrir el archivo en modo de lectura
-          //Client reads the server response
-          //client.readMessage();
-          //cout <<  "Server response: " << client.getBuffer() << endl;
-          //syslog(LOG_INFO, "Línea leída: %s", linea.c_str());
-  
-      // Si no se puede abrir el archivo, enviar un mensaje al syslog
-      //syslog(LOG_ERR, "No se pudo abrir el archivo: %s", fileRoute.c_str());
-  
-  
-  return 0;
-}
-*/

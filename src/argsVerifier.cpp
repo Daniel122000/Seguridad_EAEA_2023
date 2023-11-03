@@ -12,8 +12,8 @@ bool ArgsVerifier::verify_arguments_delivery(int argc, char const *argv[]){
     if(strlen(argv[1]) > 30 || strlen(argv[1]) < 15){
         std::cout << "Usuario " << argv[1] << " SUS.\n";
         return false;
-    }else if(strlen(argv[2]) > 500){
-        std::cout << "Codigo base64 SUS.\n";
+    }else if(strlen(argv[2]) > 600){
+        std::cout << "Codigo base64 SUS (Muy largo).\n";
         return false;
     }else if(strlen(argv[3]) > 500){
         std::cout << "Mensaje demasiado extenso. 500 caracteres maximo.\n";
@@ -34,6 +34,7 @@ bool ArgsVerifier::verify_arguments_node(std::string args,std::string* strings,
     std::string plain = args.substr(pos3+1);
 
     if(stringX != strings[2] || user.empty() || base64.empty() || plain.empty()){
+        Logger::log("Argumentos invalidos. Esperando otros mensajes.");
         return false;
     }
     *u = user;

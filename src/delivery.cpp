@@ -1,5 +1,6 @@
 #include "clientEAEA.hpp"
 #include "argsVerifier.hpp"
+#include "logger.hpp"
 
 #define IP_ADDR "192.168.5.56"
 
@@ -19,7 +20,9 @@ void deliver_message(std::string message){
     client.convert_Addresses((char*)IP_ADDR);
     client.create_Connection();
     client.sendMessage(message.c_str());
-    std::cout << "Message sent to " << IP_ADDR << std::endl;
+    std::string log_message = "Message sent to ";
+    log_message.append(IP_ADDR);
+    Logger::log(log_message);
     client.endConnection();
 }
 

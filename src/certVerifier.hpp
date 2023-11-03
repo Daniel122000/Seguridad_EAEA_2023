@@ -2,6 +2,7 @@
 #define _CERT_VERIFIER_HPP
 
 #include "signVerifier.hpp"
+#include "logger.hpp"
 
 #include <iostream>
 #include <string>

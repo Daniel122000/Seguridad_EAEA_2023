@@ -2,6 +2,7 @@
 #define _SIGN_VERIFIER_HPP
 
 #include "coder.hpp"
+#include "logger.hpp"
 
 #include <openssl/x509.h>
 #include <openssl/pem.h>

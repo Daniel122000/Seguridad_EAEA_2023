@@ -31,14 +31,14 @@ void SignVerifier::extract_user_public_key(X509* cert_user, bool* success, char*
   X509_REQ* csr_user = try_read_csr(cert_user, success);
   if (!success) {
     X509_REQ_free(csr_user);
-    std::cout << "No se pudo cargar el .csr del certificado del usuario." << std::endl;
+    Logger::log("No se pudo cargar el .csr del certificado del usuario.");
     return;
   }
   // Extraer llave publica de .csr del usuario
   try_read_pubkey(csr_user, pubkey_char_user);
   if(!pubkey_char_user){
     X509_REQ_free(csr_user);
-    std::cout << "Error al leer llave publica del usuario." << std::endl;
+    Logger::log("Error al leer llave publica del usuario.");
     return;
   }
   X509_REQ_free(csr_user);
@@ -49,13 +49,13 @@ void SignVerifier::extract_user_public_key(X509* cert_user, bool* success, char*
 EVP_PKEY* SignVerifier::load_public_key_from_string(const char* public_key_pem){
     BIO* bio = BIO_new_mem_buf(public_key_pem, -1);
     if (bio == nullptr) {
-        std::cout << "Error al crear el objeto BIO" << std::endl;
+        Logger::log("Error en el procesamiento del certificado.");
         return nullptr;
     }
 
     EVP_PKEY* public_key = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
     if (public_key == nullptr) {
-        std::cout << "Error al leer la clave pública desde la cadena PEM" << std::endl;
+        Logger::log("Error en el procesamiento del certificado.");
         BIO_free(bio);
         return nullptr;
     }
