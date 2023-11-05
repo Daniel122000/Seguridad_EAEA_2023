@@ -8,6 +8,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <iostream>
+#include <cstdio>
 
 #define IN_PORT 60138 // EAEA
 
