@@ -6,6 +6,7 @@
 
 #include <openssl/x509.h>
 #include <openssl/pem.h>
+#include <openssl/evp.h>
 #include <iostream>
 
 class SignVerifier{
