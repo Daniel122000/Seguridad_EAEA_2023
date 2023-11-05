@@ -22,7 +22,7 @@ void CertVerifier::verify_user_certificate_with_ca(X509* cert_user, bool* succes
     return;
   }
   // Extraer llave publica de .csr de CA
-  char* pubkey_char_CA = nullptr;
+  char* pubkey_char_CA = NULL;
   EVP_PKEY* pubkey_CA = signV.try_read_pubkey(csr_CA, &pubkey_char_CA);
   if(!pubkey_char_CA){
     X509_free(cert_CA);

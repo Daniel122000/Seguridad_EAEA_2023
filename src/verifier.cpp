@@ -28,7 +28,7 @@ bool Verifier::verify_certificate(){
 
 bool Verifier::verify_sign(){
     // Extraer la llave publica del usuario para verificar la firma
-    char* pubkey_char_user = nullptr; // Llave publica formato .pem
+    char* pubkey_char_user = NULL; // Llave publica formato .pem
     signV.extract_user_public_key(user_cert, &success, &pubkey_char_user);
     bool res = signV.verify_signature(pubkey_char_user, coder.sha256(_plain), (char*)_signature64.c_str());
     return res;

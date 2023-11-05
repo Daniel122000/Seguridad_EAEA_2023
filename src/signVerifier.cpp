@@ -6,9 +6,9 @@ SignVerifier::~SignVerifier(){}
 
 X509_REQ* SignVerifier::try_read_csr(X509* cert, bool* success){ // Uso el csr del CA?
   // Obtener el .csr del certificado
-  X509_REQ *csr = X509_to_X509_REQ(cert, nullptr, EVP_get_digestbyname("sha256"));
+  X509_REQ *csr = X509_to_X509_REQ(cert, NULL, EVP_get_digestbyname("sha256"));
   
-  if (csr == nullptr) {
+  if (csr == NULL) {
     *success = false;
     return NULL;
   }
@@ -48,16 +48,16 @@ void SignVerifier::extract_user_public_key(X509* cert_user, bool* success, char*
 
 EVP_PKEY* SignVerifier::load_public_key_from_string(const char* public_key_pem){
     BIO* bio = BIO_new_mem_buf(public_key_pem, -1);
-    if (bio == nullptr) {
+    if (bio == NULL) {
         Logger::log("Error en el procesamiento del certificado.");
-        return nullptr;
+        return NULL;
     }
 
-    EVP_PKEY* public_key = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
-    if (public_key == nullptr) {
+    EVP_PKEY* public_key = PEM_read_bio_PUBKEY(bio, NULL, NULL, NULL);
+    if (public_key == NULL) {
         Logger::log("Error en el procesamiento del certificado.");
         BIO_free(bio);
-        return nullptr;
+        return NULL;
     }
 
     BIO_free(bio);
