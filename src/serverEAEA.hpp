@@ -21,9 +21,10 @@ class ServerEAEA {
 
  public:
   ServerEAEA();
+  ServerEAEA(std::string);
   char* getBuffer();
   void createSocket();
-	void init_Socket();
+	void init_Socket(std::string);
 	void bind_Socket();
   void listenForConnections();
   void acceptNewConnection();

@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]) { // -----------------------------------M
 
   while(true) {
     bool state = true;
-    ServerEAEA server;
+    ServerEAEA server(strings[0]);
     server.listenForConnections();
     server.acceptNewConnection();
 

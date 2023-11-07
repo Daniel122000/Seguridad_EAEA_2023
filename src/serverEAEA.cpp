@@ -8,6 +8,12 @@ ServerEAEA::ServerEAEA() {
   bind_Socket();
 }
 
+ServerEAEA::ServerEAEA(std::string serverIP) {
+  createSocket();
+  init_Socket(serverIP);
+  bind_Socket();
+}
+
 char* ServerEAEA::getBuffer() {
   return buffer;
 }
@@ -19,7 +25,7 @@ void ServerEAEA::createSocket() {
 	}
 }
 
-void ServerEAEA::init_Socket () {
+void ServerEAEA::init_Socket (std::string server_ip) {
   int opt = 1;
 	if (setsockopt(serverFileDescriptor, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
 		perror("setsockopt");
@@ -27,7 +33,7 @@ void ServerEAEA::init_Socket () {
 	}
 
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = INADDR_ANY;
+	address.sin_addr.s_addr = server_ip;
 	address.sin_port = htons(IN_PORT); 
 }
 
