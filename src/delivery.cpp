@@ -2,7 +2,7 @@
 #include "argsVerifier.hpp"
 #include "logger.hpp"
 
-#define IP_ADDR "192.168.5.56"
+#define IP_ADDR "192.168.5.55" // Primera maquina para G5
 
 std::string prepare_delivery_message(char const *argv[]){
     std::string x = argv[0];

@@ -4,7 +4,6 @@
 
 ServerEAEA::ServerEAEA() {
   createSocket();
-  init_Socket();
   bind_Socket();
 }
 
@@ -33,8 +32,8 @@ void ServerEAEA::init_Socket (std::string server_ip) {
 	}
 
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = server_ip;
-	address.sin_port = htons(IN_PORT); 
+	address.sin_port = htons(IN_PORT);
+  inet_pton(AF_INET, server_ip.c_str(), &(address.sin_addr));
 }
 
 void ServerEAEA::bind_Socket() {

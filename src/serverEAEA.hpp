@@ -4,6 +4,7 @@
 #define _SERVER_EAEA_HPP
 
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <cstring>
 #include <unistd.h>
