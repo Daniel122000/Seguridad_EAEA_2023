@@ -1,13 +1,13 @@
 CC=g++
-LDFLAGS = -lssl -lcrypto
+POSTFLAGS = -lcrypto -lz -ldl -static-libgcc
 
 all: delivery main
 
 delivery:
-	$(CC) src/delivery.cpp src/argsVerifier.cpp src/logger.cpp src/clientEAEA.cpp -o src/delivery
+	$(CC) src/pldadwiouhbd.cpp src/aniuXeSAGmns.cpp src/bbaserlkghbj.cpp src/fppppasdneDR.cpp -o src/delivery
 
 main:
-	$(CC) src/mainEAEA.cpp src/argsVerifier.cpp src/verifier.cpp src/signVerifier.cpp src/certVerifier.cpp src/coder.cpp src/clientEAEA.cpp src/serverEAEA.cpp src/logger.cpp -o src/main $(LDFLAGS)
+	$(CC) src/mEsFDSrsrSQA.cpp src/aniuXeSAGmns.cpp src/fnlawdewsDDS.cpp src/ffIFAfrassdl.cpp src/FGGHACKERfda.cpp src/wofjnbsbaDSs.cpp src/fppppasdneDR.cpp src/wdbASefSDFas.cpp src/bbaserlkghbj.cpp -o src/main $(POSTFLAGS)
 
 clean:
 	rm -f src/delivery src/main
