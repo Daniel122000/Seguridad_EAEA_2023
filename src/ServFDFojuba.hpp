@@ -1,6 +1,5 @@
 #ifndef _DASDSAS
 #define _DASDSAS
-
 #include "SnfgoebGadaa.hpp"
 #include "juhasdgfdsad.hpp"
 #include <iostream>
@@ -11,17 +10,14 @@
 #include <arpa/inet.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
-
-class DADSTTAS{
-  private:
-    m MMNASDDD;
-    
+class 
+DADSTTAS{  private: 
+m MMNASDDD;
   public:
-    DADSTTAS();
-    ~DADSTTAS();
-    X509* DECODEHASH(const char*, bool*);
-    X509* TRYENCODEHASH(const char*, bool*);
-    void VERIFYTHEHASH(X509*, bool*);
-};
+    DADSTTAS();~DADSTTAS(
 
+    );X509* DECODEHASH(const char*, bool*);X509* 
+    TRYENCODEHASH(const char*, bool
+    *);void VERIFYTHEHASH(X509
+    *, bool*);};
 #endif
