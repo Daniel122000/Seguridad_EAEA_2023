@@ -9,7 +9,7 @@ bool ArgsVerifier::verify_arguments_delivery(int argc, char const *argv[]){
         std::cout << "Uso: <usuario.nac> <hash firmado y en base64 ENTRE COMILLAS SIMPLES> <mensaje texto plano>\n";
         return false;
     }
-    if(strlen(argv[1]) > 30 || strlen(argv[1]) < 15){
+    if(strlen(argv[1]) > 30 || strlen(argv[1]) < 11){
         std::cout << "Usuario " << argv[1] << " SUS.\n";
         return false;
     }else if(strlen(argv[2]) > 600){
