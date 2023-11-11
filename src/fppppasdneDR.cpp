@@ -4,17 +4,11 @@ int cnreiuabisvdbf::gdfgibyasd(std::string X) {
 	if ((vasnbdikkhu = socket(AF_INET, SOCK_STREAM, 0)) < 0) {cout << "\n Socket creation error \n";
     return -1;}
 	plaoaujbsdvcwd.sin_family = AF_INET;
-	plaoaujbsdvcwd.sin_port = htons(FASDFDSA);
+	plaoaujbsdvcwd.sin_port = htons(FASDFDSA);  
+	plaoaujbsdvcwd.sin_addr.s_addr = inet_addr(X.c_str());
+	bind(vasnbdikkhu, (struct sockaddr *)&plaoaujbsdvcwd, sizeof(plaoaujbsdvcwd));
 
-  if (inet_pton(AF_INET, X.c_str(), &plaoaujbsdvcwd.sin_addr) <= 0) {
-    cout << "\nInvalid address/ Address not supported \n";
-    return -1;
-  }
 
-  if (bind(vasnbdikkhu, (struct sockaddr*)&plaoaujbsdvcwd, sizeof(plaoaujbsdvcwd)) < 0) {
-    cout << "\nBIFAIL\n";
-    return -1;
-  }
 	return 0;
 	}
 int cnreiuabisvdbf::dasd(char* deedd) {if (inet_pton(AF_INET, deedd, &plaoaujbsdvcwd.sin_addr) <= 0) {
