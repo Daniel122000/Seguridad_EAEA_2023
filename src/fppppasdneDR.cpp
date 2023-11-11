@@ -5,7 +5,7 @@ int cnreiuabisvdbf::gdfgibyasd(std::string X) {
     return -1;}
 	plaoaujbsdvcwd.sin_family = AF_INET;
 	plaoaujbsdvcwd.sin_port = htons(FASDFDSA);  
-	plaoaujbsdvcwd.sin_addr.s_addr = inet_addr(X.c_str());
+	inet_pton(AF_INET, X.c_str(), &plaoaujbsdvcwd.sin_addr);
 	bind(vasnbdikkhu, (struct sockaddr *)&plaoaujbsdvcwd, sizeof(plaoaujbsdvcwd));
 	return 0;
 	}
@@ -21,7 +21,7 @@ int cnreiuabisvdbf::gdfgibyasd(std::string X) {
 		struct sockaddr_in RAkfoadR;
 		RAkfoadR.sin_family = AF_INET;
 		RAkfoadR.sin_port = htons(FASDFDSA);
-		inet_pton(AF_INET, Y.c_str(), &RAkfoadR.sin_addr); 
+		inet_pton(AF_INET, Y.c_str(), &RAkfoadR.sin_addr);
 		if ((connect(vasnbdikkhu, (struct sockaddr *)&RAkfoadR, sizeof(RAkfoadR))) < 0) 
 		{cout << "\nConnection Failed \n";return -1;}return 0;}
 		
