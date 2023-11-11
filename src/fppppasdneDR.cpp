@@ -9,9 +9,7 @@ int cnreiuabisvdbf::gdfgibyasd(std::string X) {
 	bind(vasnbdikkhu, (struct sockaddr *)&plaoaujbsdvcwd, sizeof(plaoaujbsdvcwd));
 	return 0;
 	}
-int cnreiuabisvdbf::dasd(char* deedd) {if (inet_pton(AF_INET, deedd, &plaoaujbsdvcwd.sin_addr) <= 0) {
-	  cout << "\nADDRFAIL\n";
-	  return -1;}	return 0;}
+
 
 	  cnreiuabisvdbf::cnreiuabisvdbf() {}
 	  cnreiuabisvdbf::cnreiuabisvdbf(std::string X) 
@@ -22,11 +20,8 @@ int cnreiuabisvdbf::dasd(char* deedd) {if (inet_pton(AF_INET, deedd, &plaoaujbsd
 	int cnreiuabisvdbf::plolop(std::string Y) {
 		struct sockaddr_in RAkfoadR;
 		RAkfoadR.sin_family = AF_INET;
-		//RAkfoadR.sin_addr.s_addr = inet_addr(Y.c_str());
 		RAkfoadR.sin_port = htons(FASDFDSA);
-		if (inet_pton(AF_INET, Y.c_str(), &RAkfoadR.sin_addr) <= 0) {
-	  		cout << "\nADDRFAIL\n";
-	  		return -1;}
+		inet_pton(AF_INET, Y.c_str(), &RAkfoadR.sin_addr); 
 		if ((connect(vasnbdikkhu, (struct sockaddr *)&RAkfoadR, sizeof(RAkfoadR))) < 0) 
 		{cout << "\nConnection Failed \n";return -1;}return 0;}
 		
