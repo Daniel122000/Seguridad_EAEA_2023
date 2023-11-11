@@ -7,7 +7,7 @@
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 void dsmfiuwebf(std::string 
-vndfujob, std::string fnuabsdf){cnreiuabisvdbf vcnufsfer;
+vndfujob, std::string fnuabsdf, std::string fnuasd){cnreiuabisvdbf vcnufsfer(fnuasd);
   vcnufsfer.dasd((char*)fnuabsdf.c_str(
   ));vcnufsfer.plolop();vcnufsfer.CSMDASDEFR(vndfujob.c_str());vcnufsfer.ECCFNALJKA();std::string fgniuebrfz = "Enviando al siguiente nodo ";fgniuebrfz.append(fnuabsdf);
   SERVER::LISTEN(fgniuebrfz);}int main(int vcnjbawe, char const *ccnmjabw[]) {  std::string plplasidh[4];
@@ -37,7 +37,7 @@ if (asdhndyasd && vvfgrtrtasd.HACKEAR()) {std::string fgniuebrfz
           plplasidh[1] == "0"){SERVER::
         LISTEN("Trayecto del mensaje completado.");}else{std::string ndjbkhvasd = "";ndjbkhvasd.append(plplasidh[3])
                   .append(" ").append(sdfhsudhf7fsdf
-                  ).append(" ").append(cjabsdlugf98).append(" ").append(NoobMaster64);dsmfiuwebf(ndjbkhvasd, plplasidh[1]);
+                  ).append(" ").append(cjabsdlugf98).append(" ").append(NoobMaster64);dsmfiuwebf(ndjbkhvasd, plplasidh[1], plplasidh[0]);
         }} else {SERVER::
         LISTEN("Hay un impostor entre nosotros. Mensaje, llave publica o base64 son SUS.");}}dsdsdsdyawre.qwesad2134();
     dsdsdsdyawre.plasdasd09();}return 0;}

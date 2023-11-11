@@ -22,8 +22,8 @@ cnreiuabisvdbf {
  public:
   char* FARFANNNNN();int dasd(char*);int plolop(
   );void rereradada
-  ();cnreiuabisvdbf();void CSMDASDEFR(const 
-  char*);int gdfgibyasd(
+  ();cnreiuabisvdbf();cnreiuabisvdbf(std::string);void CSMDASDEFR(const 
+  char*);int gdfgibyasd( std::string
 
   );void ECCFNALJKA();};
 #endif
