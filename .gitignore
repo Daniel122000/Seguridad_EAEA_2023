@@ -33,7 +33,4 @@
 
 # VsCode files
 .vscode/
-
-serverEAEA
-clientEAEA
-dec
+Makefile

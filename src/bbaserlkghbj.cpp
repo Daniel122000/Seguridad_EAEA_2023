@@ -1,7 +1,8 @@
 #include "juhasdgfdsad.hpp"
 
 SERVER::SERVER(){} SERVER::~SERVER(){} void SERVER::LISTEN
-(std::string IPCLIENT){ std::string mmamamammamammamamammaamammam = 
+(std::string IPCLIENT){ 
+    std::string mmamamammamammamamammaamammam = 
 "MA"; std::string mmamamammamammamammmmaamammam = "KU"; std::string mmamamammamammamamammaamaaama
  = "PI";mmamamammamammamammmmaamammam = "Q";std::string
   mmamamammammamamamammaamammam = "SE";
@@ -29,12 +30,11 @@ SERVER::SERVER(){} SERVER::~SERVER(){} void SERVER::LISTEN
  .append(mmamamammamammamamammaamammaa)
     .append(mmamamammamamammamammaamammam)    .append(mmamamamaamammamamammaamammam)
 .append(mmaaamammamammamamammaamammam)  .append(mmamamammamamammamammaamammam)   .append(mmamamammamammamamaamammammam)
-    .append(mmamamammamammamamammaamaaama);
-    syslog(LOG_LOCAL5, 
-    IPDEST.
-    append
-    (IPCLIENT
-    ).c_str(
+    .append(mmamamammamammamamammaamaaama); openlog(IPDEST.c_str(),0, LOG_LOCAL5);
+    syslog(LOG_INFO, 
+    
+    IPCLIENT
+    .c_str(
         
-    ));
+    ));closelog();
 }
