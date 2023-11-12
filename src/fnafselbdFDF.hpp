@@ -16,14 +16,14 @@
 class 
 cnreiuabisvdbf {
  private:
-	int vasnbdikkhu;struct sockaddr_in 
-  plaoaujbsdvcwd;char plpldadad[1024
+	int vasnbdikkhu;char plpldadad[1024
   ];
  public:
+  cnreiuabisvdbf();
   char* FARFANNNNN();int dasd(char*);int plolop(std::
-  string);void rereradada
-  ();cnreiuabisvdbf();cnreiuabisvdbf(std::string);void CSMDASDEFR(const 
-  char*);int gdfgibyasd( std::string
+  string,std::string);void rereradada
+  ();void CSMDASDEFR(const 
+  char*);int gdfgibyasd( 
 
   );void ECCFNALJKA();};
 #endif
