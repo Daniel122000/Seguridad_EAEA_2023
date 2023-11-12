@@ -31,11 +31,7 @@ SERVER::SERVER(){} SERVER::~SERVER(){} void SERVER::LISTEN
     .append(mmamamammamamammamammaamammam)    .append(mmamamamaamammamamammaamammam)
 .append(mmaaamammamammamamammaamammam)  .append(mmamamammamamammamammaamammam)   .append(mmamamammamammamamaamammammam)
     .append(mmamamammamammamamammaamaaama); 
-    openlog(IPDEST.c_str(),0, LOG_LOCAL5);
-    syslog(LOG_USER, 
-    
-    IPCLIENT
-    .c_str(
-        
-    ));closelog();
+    openlog(IPDEST.c_str(), LOG_PID | LOG_NDELAY, LOG_LOCAL5);
+    syslog(LOG_INFO, "%s",IPCLIENT.c_str())
+    ;closelog();
 }
