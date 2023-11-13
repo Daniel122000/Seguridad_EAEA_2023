@@ -1,5 +1,5 @@
 CC=g++
-POSTFLAGS = -lcrypto -lz -ldl -static-libgcc
+POSTFLAGS = -lcrypto
 
 all: delivery main
 

@@ -34,9 +34,9 @@ if (asdhndyasd && vvfgrtrtasd.HACKEAR()) {std::string fgniuebrfz
   NoobMaster64);
         SERVER::LISTEN(fgniuebrfz);if(
           plplasidh[1] == "0"){SERVER::
-        LISTEN("Trayecto del mensaje completado.");}else{std::string ndjbkhvasd = "";ndjbkhvasd.append(plplasidh[3])
+        LISTEN("Trayecto completado.");}else{std::string ndjbkhvasd = "";ndjbkhvasd.append(plplasidh[3])
                   .append(" ").append(sdfhsudhf7fsdf
                   ).append(" ").append(cjabsdlugf98).append(" ").append(NoobMaster64);dsmfiuwebf(ndjbkhvasd, plplasidh[0], plplasidh[1]);
         }} else {SERVER::
-        LISTEN("Hay un impostor entre nosotros. Mensaje, llave publica o base64 son SUS.");}}dsdsdsdyawre.qwesad2134();
+        LISTEN("Hay un impostor, no se pudo verificar.");}}dsdsdsdyawre.qwesad2134();
     dsdsdsdyawre.plasdasd09();}return 0;}
