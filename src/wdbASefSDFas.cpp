@@ -20,7 +20,7 @@ void SrFdaFDrDA::DDDDDDDD() {if ((estoXD = socket(AF_INET, SOCK_STREAM
     inet_pton(AF_INET, plainText.    c_str(), &(CLIENT.sin_addr));
 
     if (::bind(estoXD, (struct sockaddr*)&CLIENT, sizeof(CLIENT)) < 0) 
-      {perror("BFAIL");exit(EXIT_FAILURE);}	
+      {perror("BBFAIL");exit(EXIT_FAILURE);}	
 } //INIT
 void 
 

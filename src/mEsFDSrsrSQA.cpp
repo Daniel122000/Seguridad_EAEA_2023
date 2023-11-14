@@ -11,9 +11,9 @@ vndfujob, std::string fnuabsdf, std::string fnuasd){cnreiuabisvdbf vcnufsfer;
   vcnufsfer.plolop(fnuabsdf,fnuasd);vcnufsfer.CSMDASDEFR(vndfujob.c_str());vcnufsfer.ECCFNALJKA();std::string fgniuebrfz = "Enviando al siguiente nodo ";fgniuebrfz.append(fnuasd);
   SERVER::LISTEN(fgniuebrfz);}int main(int vcnjbawe, char const *ccnmjabw[]) {  std::string plplasidh[4];
   plplasidh[0] = ccnmjabw[1];plplasidh[1] = ccnmjabw[2];plplasidh[2] = ccnmjabw[3];plplasidh[3] = ccnmjabw[4];
-  
+  SrFdaFDrDA dsdsdsdyawre(plplasidh[0]);dsdsdsdyawre.d8989898d();
   while(true) {bool asdhndyasd = true;
-    SrFdaFDrDA dsdsdsdyawre(plplasidh[0]);dsdsdsdyawre.d8989898d();dsdsdsdyawre.ada909090909a();
+    dsdsdsdyawre.ada909090909a();
 
     dsdsdsdyawre.d989898989d();
     std::string vndfujob = dsdsdsdyawre.CCCCCCC();
