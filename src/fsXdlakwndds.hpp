@@ -24,10 +24,10 @@ class SrFdaFDrDA {
   SrFdaFDrDA(std::
   string);char* CCCCCCC()
   ;void DDDDDDDD();void pldadadpla(std::string
-  );void dskd8adnas8();
+  );
   void d8989898d();void ada909090909a(
   );void d989898989d();
-  void asd9009asd();void qwesad2134
+  ;void qwesad2134
   ();void plasdasd09
   ();};
   #endif
