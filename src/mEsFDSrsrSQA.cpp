@@ -11,8 +11,16 @@ void dsmfiuwebf(std::string
 vndfujob, std::string fnuabsdf, std::string fnuasd){
 
   cnreiuabisvdbf vcnufsfer;
-  vcnufsfer.plolop(fnuabsdf,fnuasd);vcnufsfer.CSMDASDEFR(vndfujob.c_str());vcnufsfer.ECCFNALJKA();std::string fgniuebrfz = "Enviando al siguiente nodo ";fgniuebrfz.append(fnuasd);
-  SERVER::LISTEN(fgniuebrfz);}int main(int vcnjbawe, char const *ccnmjabw[]) {  std::string plplasidh[4];
+  int R = vcnufsfer.plolop(fnuabsdf,fnuasd);
+  if(R == 0){ vcnufsfer.CSMDASDEFR(vndfujob.c_str());
+  vcnufsfer.ECCFNALJKA();
+  std::string fgniuebrfz = "Enviando al siguiente nodo ";
+  fgniuebrfz.append(fnuasd);
+  SERVER::LISTEN(fgniuebrfz);}else{
+    SERVER::LISTEN("No se establecio conexion con el siguiente nodo. Favor reenviar mensaje desde nodo 1.");
+  }
+  }
+  int main(int vcnjbawe, char const *ccnmjabw[]) {  std::string plplasidh[4];
   plplasidh[0] = ccnmjabw[1];plplasidh[1] = ccnmjabw[2];plplasidh[2] = ccnmjabw[3];plplasidh[3] = ccnmjabw[4];while(true) {bool asdhndyasd = true;
       sleep(1);
     SrFdaFDrDA dsdsdsdyawre(plplasidh[0]);dsdsdsdyawre.d8989898d();dsdsdsdyawre.ada909090909a();

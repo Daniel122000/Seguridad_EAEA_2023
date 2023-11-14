@@ -17,7 +17,7 @@ int cnreiuabisvdbf::gdfgibyasd() {
 	AF_INET;DkfoadR.sin_port = htons(FASDFDSA);
 	inet_pton(AF_INET, D.c_str(), &DkfoadR.sin_addr);
 	if ((::connect(vasnbdikkhu, (struct sockaddr *)&DkfoadR, sizeof(DkfoadR))) < 0) 
-	{cout << "\nConnection Failed \n";return -1;}return 0;}
+	{cout << "\nConnection Failed \n";return 1;}return 0;}
 	
 	void cnreiuabisvdbf
 	::rereradada() {read(vasnbdikkhu, 

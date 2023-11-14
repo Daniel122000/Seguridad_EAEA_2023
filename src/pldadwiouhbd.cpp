@@ -8,20 +8,22 @@ std::string a(char const *asdasdadasd[]){std::string x = asdasdadasd[0];std
     );z.append(y).append(" ").append(x1).append(" ").append(y1);return z;
 }
 
-void xd(std::string asdasdada5d){
+int xd(std::string asdasdada5d){
     cnreiuabisvdbf server;
-    server.plolop("127.0.0.1", IP_ADDR);
-    server.CSMDASDEFR(asdasdada5d.c_str(
+    int r = server.plolop("127.0.0.1", IP_ADDR);
+    if(r == 0){server.CSMDASDEFR(asdasdada5d.c_str(
 
     ));
     std::string asdasdadasd = "Message sent to ";
     asdasdadasd.append(IP_ADDR);
     SERVER::LISTEN(asdasdadasd);
-    server.ECCFNALJKA();}
+    server.ECCFNALJKA();}else{
+        SERVER::LISTEN("No se pudo enviar el mensaje. Intente de nuevo.");
+    }}
     
 int main(int asdasdadasd
     , char const *asdasdddasd[
 
     ])
 {SIGNVERIFIER cerVerifier;if(!cerVerifier.VERIFICERTSIGN(asdasdadasd, asdasdddasd)){return 1;
-    }std::string asdssdadasd = a(asdasdddasd);xd(asdssdadasd);return 0;}
+    }std::string asdssdadasd = a(asdasdddasd);return xd(asdssdadasd);}
