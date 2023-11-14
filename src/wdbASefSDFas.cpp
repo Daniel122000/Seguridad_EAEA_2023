@@ -12,7 +12,7 @@ void SrFdaFDrDA::DDDDDDDD() {if ((estoXD = socket(AF_INET, SOCK_STREAM
 		perror("SEFAIL");exit(EXIT_FAILURE);}CLIENT.sin_family = AF_INET;CLIENT.sin_port = htons(POLOLO);inet_pton(AF_INET, plainText.
     c_str(), &(CLIENT.sin_addr));
 }void SrFdaFDrDA::dskd8adnas8() {if (bind
-(estoXD, (struct sockaddr*)&CLIENT, sizeof(CLIENT)) < 0) {perror("BFAIL");exit(EXIT_FAILURE);}	
+(estoXD, (struct sockaddr*)&CLIENT, sizeof(CLIENT)) < 0) {perror("BBBFAIL");exit(EXIT_FAILURE);}	
 }void SrFdaFDrDA::d8989898d() {if (listen(estoXD, 3) < 0) {perror("DEAF");exit(EXIT_FAILURE);
 	}}void SrFdaFDrDA::ada909090909a() {int yuyuyuyu = sizeof(CLIENT);dsd09998866 = accept(estoXD, (struct sockaddr*)&CLIENT, (socklen_t*)
   &yuyuyuyu);if (dsd09998866 < 0) {

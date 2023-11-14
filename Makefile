@@ -1,5 +1,5 @@
 CC=g++
-POSTFLAGS = -lcrypto
+POSTFLAGS = -lcrypto -L/usr/local/lib64 -std=gnu++11
 
 all: delivery main
 
